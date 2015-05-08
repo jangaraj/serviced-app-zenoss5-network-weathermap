@@ -1,0 +1,106 @@
+{
+   "ID": "",
+   "Name": "Zenoss 5 Network Weathermap",
+   "Version": "1.0",
+   "Description": "Zenoss 5 Network Weathermap - provides network visualization (www.jangaraj.com)",
+   "Services": [
+     {
+       "Name": "Zenoss 5 Network Weathermap",
+       "Title": "weathermap",
+       "Version": "1.0",
+       "Command": "/usr/sbin/httpd -D FOREGROUND",
+       "Description": "Zenoss 5 Network Weathermap",
+       "Tags": [
+         "daemon"
+       ],
+       "ImageID": "jangaraj/serviced-app-zenoss5-network-weathermap:latest",
+       "Instances": {
+         "Min": 0,
+         "Max": 1,
+         "Default": 1
+       },
+       "ChangeOptions": null,
+       "Launch": "auto",
+       "HostPolicy": "",
+       "Hostname": "",
+       "Privileged": false,
+       "ConfigFiles": {
+         "/etc/httpd/conf.d/network-weathermap.conf": {
+           "Filename": "/etc/httpd/conf.d/network-weathermap.conf",
+           "Owner": "root:root",
+           "Permissions": "0644",
+           "Content": "##############################################################################\r\n#\r\n# Copyright (C) Jan Garaj www.jangaraj.com 2015, all rights reserved.\r\n#\r\n##############################################################################\r\n\r\nLoadModule ssl_module modules/mod_ssl.so\r\n\r\nServerName localhost\r\nSSLSessionCache         shmcb:/run/httpd/sslcache(512000)\r\nSSLSessionCacheTimeout  300\r\nSSLRandomSeed startup file:/dev/urandom  256\r\nSSLRandomSeed connect builtin\r\nSSLCryptoDevice builtin\r\nSSLEngine on\r\nSSLProxyEngine on\r\nSSLProtocol all -SSLv2\r\nSSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5\r\nSSLCertificateFile /etc/pki/tls/certs/localhost.crt\r\nSSLCertificateKeyFile /etc/pki/tls/private/localhost.key\r\n\r\nListen 8081\r\n<VirtualHost \"0.0.0.0:8081\">\r\n  SSLEngine on\r\n  SSLProxyEngine on\r\n  ProxyPreserveHost on\r\n  RequestHeader set Host \"zenoss5.local\"\r\n  ProxyPass / https://127.0.0.1:443/\r\n</VirtualHost>\r\n\r\nListen 55672\r\n<VirtualHost \"0.0.0.0:55672\">\r\n  SSLEngine on\r\n  SSLProxyEngine on\r\n  ProxyPreserveHost on\r\n  RequestHeader set Host \"rabbitmq.local\"\r\n  ProxyPass / https://127.0.0.1:443/\r\n</VirtualHost>\r\n"
+         }
+       },
+       "Context": {
+       },
+       "Endpoints": [
+         {
+           "Name": "weathermap",
+           "Purpose": "export",
+           "Protocol": "tcp",
+           "PortNumber": 80,
+           "PortTemplate": "",
+           "VirtualAddress": "localhost:443",
+           "Application": "weathermap",
+           "ApplicationTemplate": "",
+           "AddressConfig": {
+             "Port": 80,
+             "Protocol": "tcp"
+           },
+           "VHosts": "weathermap"
+         }                 
+       ],
+       "Tasks": null,
+       "LogFilters": null,
+       "Volumes": null,
+       "LogConfigs": [
+         {
+           "Path": "/var/log/httpd/error_log",
+           "Type": "weathermap",
+           "Filters": null,
+           "LogTags": null
+         }
+       ],       
+       "Snapshot": {
+         "Pause": "",
+         "Resume": ""
+       },
+       "RAMCommitment": "64M",
+       "CPUCommitment": 1,
+       "Runs": null,
+       "Actions": null,
+       "HealthChecks": {
+         "Weathermap - http 80": {
+           "Script": "curl -k -f -s https://localhost:80/ \u003e /dev/null",
+           "Interval": 5,
+           "Timeout": 4
+         }                                   
+       },
+       "Prereqs": null,
+       "MonitoringProfile": {
+         "MetricConfigs": null,
+         "GraphConfigs": null,
+         "ThresholdConfigs": null
+       },
+       "MemoryLimit": 0,
+       "CPUShares": 0,
+       "PIDFile": ""
+     }
+   ],
+   "ConfigFiles": null,
+   "ServicedVersion": {
+     "Version": "0.10.0",
+     "Date": "Mon Nov 24 17:40:37 UTC 2014",
+     "Gitbranch": "master",
+     "Gitcommit": "e80a617",
+     "Giturl": "",
+     "Buildtag": "0"
+   },
+   "TemplateVersion": {
+     "branch": "unknown",
+     "commit": "unknown",
+     "repo": "unknown",
+     "tag": "unknown"
+   }
+}
