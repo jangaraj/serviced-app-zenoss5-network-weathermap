@@ -17,8 +17,7 @@ class WeatherMapDataSource_zenoss5 extends WeatherMapDataSource {
             wm_debug("Zenoss 5 Init: PHP curl extension is not installed\n");
             return FALSE;
         }
-        // TODO zauth
-		$this->zenoss5Api = new SimpleZenoss5Api($map->get_hint('zenoss5_api_url'), $map->get_hint('max_collection_interval'), $map->get_hint('zenoss5_api_vhost'));
+		$this->zenoss5Api = new SimpleZenoss5Api($map->get_hint('zenoss5_api_url'), $map->get_hint('zenoss5_login'), $map->get_hint('zenoss5_password'), $map->get_hint('max_collection_interval'), $map->get_hint('zenoss5_api_vhost'));
         return TRUE;
 	}
 
@@ -40,8 +39,7 @@ class WeatherMapDataSource_zenoss5 extends WeatherMapDataSource {
         $data_time = 0;
 
 		if(preg_match("/^zenoss5:([-a-zA-Z0-9_\.\/\[\]]+):([-a-zA-Z0-9_\.\/\[\]]+):([-a-zA-Z0-9_\.\/\[\]]+):([-a-zA-Z0-9_\.\/\[\]]+)$/", $targetstring, $matches))
-		{
-            // todo 1 request        
+		{       
             list($data[IN], $data_time)  = $this->zenoss5Api->getLastValue($matches[2], $matches[3]);
             list($data[OUT], $data_time) = $this->zenoss5Api->getLastValue($matches[2], $matches[4]);
 		}
@@ -50,3 +48,5 @@ class WeatherMapDataSource_zenoss5 extends WeatherMapDataSource {
 		return (array($data[IN], $data[OUT], $data_time));
 	}
 }
+
+?>

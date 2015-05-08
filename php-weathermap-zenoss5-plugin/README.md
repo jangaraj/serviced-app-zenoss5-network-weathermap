@@ -1,7 +1,7 @@
 Zenoss 5 plugin for PHP Network Weathermap
 ==========================================
 
-This plugin integrates the Zenoss 5 monitoring tool into [PHP Weathermap](http://www.network-weathermap.com), using [Zenoss JSON API](https://github.com/zenoss/query).
+This plugin integrates the Zenoss 5 monitoring tool into [PHP Weathermap](http://www.network-weathermap.com), using [Zenoss Query API](https://github.com/zenoss/query).
 
 Requirements
 ============
