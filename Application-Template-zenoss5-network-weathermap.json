@@ -13,7 +13,7 @@
        "Tags": [
          "daemon"
        ],
-       "ImageID": "jangaraj/serviced-app-zenoss5-network-weathermap:latest",
+       "ImageID": "jangaraj/serviced-app-zenoss5-wmap:latest",
        "Instances": {
          "Min": 0,
          "Max": 1,
